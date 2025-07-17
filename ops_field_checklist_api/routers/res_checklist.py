@@ -1,8 +1,5 @@
 from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, Security, status
-from fastapi.encoders import jsonable_encoder
-
-from fastapi.security import APIKeyHeader
 from odoo import fields
 from odoo.api import Environment
 from odoo.addons.fastapi.dependencies import odoo_env
@@ -27,7 +24,7 @@ def get_officer_checklists(
     """
     Returns a list of checklist names for a given officer ID.
     """
-    # single inspection for officer
+
     single_inspection = env["checklist.inspection"].sudo().search([
         ("state", "in", ["new", "in_progress"]),
     ], limit=1)
