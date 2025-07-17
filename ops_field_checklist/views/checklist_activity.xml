@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="checklist_activity_template_form_view" model="ir.ui.view">
+        <field name="name">checklist.activity.form</field>
+        <field name="model">checklist.activity</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="template_id" options="{'no_create':False}"/>
+                        <field name="equipment_id" options="{'no_create': True, 'no_open': True}" />
+                        <field name="equipment_reference" options="{'no_create': True, 'no_open': True}" />
+                        <field name="question_ids" widget="one2many_list" options="{'no_create': True, 'no_open': True}">
+                            <tree editable="bottom">
+                                <field name="name" />
+                                <field name="answer_type" />
+                                <field name="possible_code_ids" widget="many2many_tags" options="{'no_create': True, 'no_open': True}" />
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="checklist_activity_template_tree_view" model="ir.ui.view">
+        <field name="name">checklist.activity.tree</field>
+        <field name="model">checklist.activity</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="equipment_id"/>
+                <field name="equipment_reference"/>
+            </tree>
+        </field>
+    </record>
+
+
+
+
+
+
+    <record id="checklist_activity_window_action" model="ir.actions.act_window">
+        <field name="name">Checklist Activities</field>
+        <field name="res_model">checklist.activity</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No checklist activities found. You can create new activities to be used in checklists.
+            </p>
+        </field>
+    </record>
+    <record id="checklist_activity_template_search_view" model="ir.ui.view">
+        <field name="name">checklist.activity.search</field>
+        <field name="model">checklist.activity</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="equipment_id" />
+                <field name="equipment_reference"/>
+                <filter name="filter_by_template" string="Template"
+                        domain="[('template_id', '=', context.get('default_template_id'))]"/>
+                 <group expand="0" string="Group By">
+                <filter string="Equipment" name="group_by_equipment"
+                        context="{'group_by': 'equipment_id'}"/>
+                <filter string="Template" name="group_by_template"
+                        context="{'group_by': 'template_id'}"/>
+            </group>
+            </search>
+        </field>
+    </record>
+
+
+
+    <record id="checklist_activity_equipment_graph_view" model="ir.ui.view">
+        <field name="name">checklist.activity.equipment.graph</field>
+        <field name="model">checklist.activity</field>
+        <field name="arch" type="xml">
+            <graph string="Checklist Activity by Equipment" sample="1">
+                <field name="equipment_id"/>
+            </graph>
+        </field>
+    </record>
+
+
+    <record id="checklist_activity_equipment_graph_action" model="ir.actions.act_window">
+        <field name="name">Activity by Equipment Graph</field>
+        <field name="res_model">checklist.activity</field>
+        <field name="view_mode">graph</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No activity data available. You can create new activities to track equipment compliance.
+            </p>
+        </field>
+    </record>
+
+
+    <menuitem
+        id="checklist_activity_equipment_graph_menu"
+        name="Equipment Report"
+        action="checklist_activity_equipment_graph_action"
+        parent="ops_field_checklist.report_menu"
+        sequence="110"
+    />
+
+
+
+
+
+
+
+    <menuitem
+        id="checklist_activity_menu"
+        name="Activities"
+        action="checklist_activity_window_action"
+        parent="ops_field_checklist.config_menu"
+        sequence="66"
+    />
+
+
+</odoo>

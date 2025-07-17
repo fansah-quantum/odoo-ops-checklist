@@ -1,0 +1,28 @@
+{
+    "name": "Ops Field Checklist",
+    "summary": "Field checklist for operations",
+    "version": "17.0.1.0.0",
+    "license": "Other proprietary",
+    "author": "QG Apps",
+    "website": "https://github.com/TheQuantumGroup/odoo-ops-checklist",
+    "depends": [
+        "base",
+        "maintenance",
+    ],
+    "data": [
+        "security/checklist_security.xml",
+        "security/ir.model.access.csv",
+        "data/ir_sequence.xml",
+        "data/checklist_cron.xml",
+        "views/menus.xml",
+        "views/checklist_question.xml",
+        "views/checklist_activity.xml",
+        "views/checklist_template.xml",
+        "views/checklist_answer_code.xml",
+        "views/checklist_job_request.xml",
+        "views/checklist_answer.xml",
+        "views/checklist_inspection.xml",
+        "views/checklist_inspection_activity.xml",
+        "views/checklist_respondent_team.xml",
+    ],
+}

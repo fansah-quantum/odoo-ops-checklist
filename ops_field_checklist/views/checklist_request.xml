@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+   <record id="view_maintenance_request_form_checklist" model="ir.ui.view">
+    <field name="name">maintenance.request.form.checklist</field>
+    <field name="model">maintenance.request</field>
+    <field name="inherit_id" ref="maintenance.hr_equipment_request_view_form"/>
+    <field name="priority" eval="16"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='maintenance_type']" position="replace">
+            <field name="maintenance_type" invisible="1"/>
+            <field name="equipment_name"  />
+        </xpath>
+        <xpath expr="//notebook" position="inside">
+            <page string="Checklist Info">
+                <group>
+                    <field name="inspection_activity_id" readonly="1"/>
+                    <field name="description" readonly="1"/>
+                </group>
+            </page>
+        </xpath>
+    </field>
+</record>
+    <record id="action_maintenance_request_checklist" model="ir.actions.act_window">
+    <field name="name">Checklist Job Requests</field>
+    <field name="res_model">maintenance.request</field>
+    <field name="view_mode">kanban,tree,form</field>
+    <field name="domain">[('inspection_activity_id', '!=', False)]</field>
+    <field name="context">{}</field>
+</record>
+
+<!--    <menuitem-->
+<!--    id="maintenance_request_menu_checklist"-->
+<!--    name="Job Requests"-->
+<!--    parent="ops_field_checklist.overview_menu"-->
+<!--    action="action_maintenance_request_checklist"-->
+<!--    sequence="90"-->
+<!--/>-->
+
+</odoo>

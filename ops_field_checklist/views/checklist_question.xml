@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="checklist_question_form_view" model="ir.ui.view">
+        <field name="name">checklist.question.form</field>
+        <field name="model">checklist.question</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="activity_id" options="{'no_create': True, 'no_open': True}" />
+                        <field name="name" />
+                        <field name="answer_type" />
+                        <field name="possible_code_ids" widget="many2many_tags" options="{'no_create': True, 'no_open': True}" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="checklist_question_tree_view" model="ir.ui.view">
+        <field name="name">checklist.question.tree</field>
+        <field name="model">checklist.question</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="activity_id" />
+                <field name="name" />
+                <field name="answer_type" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="checklist_question_window_action" model="ir.actions.act_window">
+        <field name="name">Checklist Questions</field>
+        <field name="res_model">checklist.question</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No checklist questions found. You can create new questions to be used in checklist activities.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="checklist_question_menu"
+        name="Questions"
+        action="checklist_question_window_action"
+        parent="ops_field_checklist.config_menu"
+        sequence="60"
+    />
+</odoo>

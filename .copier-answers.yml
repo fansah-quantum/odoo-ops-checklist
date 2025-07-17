@@ -1,0 +1,8 @@
+# Do NOT update manually; changes here will be overwritten by Copier
+_commit: v1.0.7
+_src_path: https://github.com/TheQuantumGroup/odoo-addons-repo-template.git
+generate_requirements_txt: true
+odoo_version: 14.0
+repo_description: Odoo addons to manage debt
+repo_name: Debt management addons for Odoo
+repo_slug: odoo-debt

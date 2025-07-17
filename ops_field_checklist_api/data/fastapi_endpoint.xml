@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="fastapi_endpoint_terminal_checklist_api" model="fastapi.endpoint">
+        <field name="name">Terminal Checklist - API</field>
+        <field
+            name="description"
+        ><![CDATA[
+API for checklist operations.
+]]></field>
+        <field name="app">terminal_checklist_api</field>
+        <field name="root_path">/checklist</field>
+    </record>
+</odoo>

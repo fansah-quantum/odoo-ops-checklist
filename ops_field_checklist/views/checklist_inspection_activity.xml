@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="checklist_inspection_activity_form_view" model="ir.ui.view">
+        <field name="name">checklist.inspection.activity.form</field>
+        <field name="model">checklist.inspection.activity</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                <button name="action_back_to_inspection"
+                        string="Back to Inspection"
+                        type="object"
+                        class="oe_highlight"/>
+                    <button name="action_cancel_job_request"
+                            type="object"
+                            icon="fa-times"
+                            class="btn-danger"
+                            string="Cancel Job Request"
+                            invisible="job_request_state in ['confirmed', 'cancelled'] or job_request_raised == False"
+                                />
+                    <button name="action_confirm_job_request"
+                            type="object"
+                            icon="fa-check"
+                            class="btn-primary"
+                            string="Confirm Job Request"
+                            invisible="job_request_state in ['cancelled', 'confirmed'] or job_request_raised == False"
+                                />
+                    <field name="job_request_state"
+                           widget="statusbar"
+                           statusbar_visible="draft,confirmed,cancelled"
+                           options="{'clickable': '1'}"
+                           invisible="job_request_raised == False"
+                    />
+
+            </header>
+                <sheet>
+                    <group>
+                        <field name="inspection_id" options="{'no_create': True, 'no_open': True}" />
+                        <field name="equipment_id" options="{'no_create': True, 'no_open': True}" />
+                        <field name="activity_id" options="{'no_create': True, 'no_open': True}" />
+                        <field name="comment" />
+                        <field name="job_request_raised" />
+                        <field name="respondent_team_id" options="{'no_create': True, 'no_open': True}" />
+                        <field name="respondent_user_id" options="{'no_create': True, 'no_open': True}" />
+                    </group>
+                    <notebook>
+                        <page string="Response Details">
+                                   <field name="answer_ids" widget="one2many_list" options="{'no_create': True, 'no_open': False}">
+                            <tree editable="bottom">
+                                <field name="question_id"/>
+                                <field name="answer_code_id" options="{'no_create': True, 'no_open': True}"
+                                       attrs="{'required': [('question_type', '!=', 'value')],
+                                               'invisible': [('question_type', '=', 'value')]}"
+                                />
+                                <field name="answer_value" attrs="{'required': [('question_type','=','code')],
+                                          'invisible': [('question_type','!=','code')]}"
+                                />
+                                 <field name="inspection_activity_id" column_invisible="1"/>
+                            </tree>
+                        </field>
+                        </page>
+                        <page string="Attached Documents">
+                    <field name="attachment_ids" widget="many2many_binary" string="Upload Documents"/>
+                    </page>
+                         <page string="Supervisor Comments">
+                            <field name="supervisor_comment" widget="text" placeholder="Enter any additional comments or observations here."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="checklist_inspection_activity_search_view" model="ir.ui.view">
+        <field name="name">checklist.inspection.activity.search</field>
+        <field name="model">checklist.inspection.activity</field>
+        <field name="arch" type="xml">
+            <search string="Filter Inspection Activities">
+                <field name="activity_id"/>
+                <field name="equipment_id" options="{'no_create': True, 'no_open': True}"/>
+                <field name="comment"/>
+                <separator/>
+                <filter string="Faults" name="filter_faults"
+                        domain="[('job_request_raised', '=', True)]"/>
+
+                <filter string="Today" name="filter_today"
+                        domain="[('create_date', '&gt;=', context_today().strftime('%Y-%m-%d 00:00:00'))]"/>
+
+                <separator/>
+
+                <filter string="Raised" name="filter_raised"
+                        domain="[('job_request_state', '=', 'raised')]"/>
+                <filter string="Confirmed" name="filter_confirmed"
+                        domain="[('job_request_state', '=', 'confirmed')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Status" name="group_by_status"
+                            context="{'group_by': 'job_request_state'}"/>
+                    <filter string="Creation Date" name="group_by_date"
+                            context="{'group_by': 'create_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="checklist_inspection_activity_tree_view" model="ir.ui.view">
+        <field name="name">checklist.inspection.activity.tree</field>
+        <field name="model">checklist.inspection.activity</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="inspection_id" />
+                <field name="activity_id" string="Specific Area"/>
+                <field name="equipment_id" options="{'no_create': True, 'no_open': True}" invisible="1"/>
+                <field name="comment" string="Officer Comment"/>
+                <field name="job_status" widget="badge"
+                       decoration-success="job_status == 'completed'"
+                       decoration-warning="job_status == 'in_progress' or job_status == 'pending'"
+                       invisible="job_request_raised == False"
+                       string="Job Status"
+                />
+                <field name="job_request_raised"  column_invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="checklist_inspection_activity_window_action" model="ir.actions.act_window">
+        <field name="name">Checklist Inspection Activities</field>
+        <field name="res_model">checklist.inspection.activity</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="checklist_inspection_activity_search_view"/>
+        <field name="context">{'search_default_filter_today': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No checklist inspection activities found. You can create new activities to be used in checklist inspections.
+            </p>
+        </field>
+    </record>
+
+
+    <record id="action_view_activity_details" model="ir.actions.act_window">
+    <field name="name">Activity Details</field>
+    <field name="res_model">checklist.inspection.activity</field>
+    <field name="view_mode">form</field>
+    <field name="target">new</field>
+</record>
+
+    <menuitem
+        id="checklist_inspection_activity_menu"
+        name="Inspection Activities"
+        action="checklist_inspection_activity_window_action"
+        parent="ops_field_checklist.overview_menu"
+        sequence="80"
+    />
+</odoo>

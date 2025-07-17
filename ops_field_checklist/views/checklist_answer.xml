@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="checklist_answer_form_view" model="ir.ui.view">
+        <field name="name">checklist.answer.form</field>
+        <field name="model">checklist.answer</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="inspection_activity_id" options="{'no_create': True, 'no_open': True}" />
+                        <field name="question_id"
+                           domain="[('activity_id', '=', inspection_activity_id.activity_id)]"/>
+                        <field name="answer_code_id" options="{'no_create': True, 'no_open': True}" />
+                        <field name="answer_value" />
+                        <field name="inspection_activity_id" invisible="1" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="checklist_answer_tree_view" model="ir.ui.view">
+        <field name="name">checklist.answer.tree</field>
+        <field name="model">checklist.answer</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="inspection_activity_id"/>
+                <field name="question_id" />
+                <field name="answer_code_id" />
+                <field name="answer_value" />
+            </tree>
+        </field>
+    </record>
+    <record id="checklist_answer_window_action" model="ir.actions.act_window">
+        <field name="name">Checklist Answers</field>
+        <field name="res_model">checklist.answer</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No checklist answers found. You can create new answers to be used in checklist activities.
+            </p>
+        </field>
+    </record>
+<!--    <menuitem-->
+<!--        id="checklist_answer_menu"-->
+<!--        name="Answers"-->
+<!--        action="checklist_answer_window_action"-->
+<!--        parent="ops_field_checklist.config_menu"-->
+<!--        sequence="84"-->
+<!--    />-->
+</odoo>

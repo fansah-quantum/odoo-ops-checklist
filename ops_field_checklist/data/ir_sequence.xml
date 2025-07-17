@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="0">
+    <record id="checklist_sequence" model="ir.sequence">
+        <field name="name">Checklist</field>
+        <field name="code">checklist.inspection</field>
+        <field name="prefix">QTL-FOPPSC%(y)s</field>
+        <field name="padding">5</field>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="checklist_job_request_sequence" model="ir.sequence">
+    <field name="name">Checklist Job Request</field>
+    <field name="code">checklist.job.request</field>
+    <field name="prefix">QTL-JR%(y)s</field>
+    <field name="padding">5</field>
+    <field name="company_id" ref="base.main_company"/>
+</record>
+
+</odoo>
+
+
+

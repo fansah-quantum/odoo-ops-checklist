@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="checklist_template_form_view" model="ir.ui.view">
+        <field name="name">checklist.template.form</field>
+        <field name="model">checklist.template</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="activity_ids" widget="many2many_tags" options="{'no_create': True, 'no_open': True}" />
+                        <field name="equipment_ids" widget="many2many_tags" options="{'no_create': True, 'no_open': True}" />
+                        <field name="checklist_type" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="checklist_template_tree_view" model="ir.ui.view">
+        <field name="name">checklist.template.tree</field>
+        <field name="model">checklist.template</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="checklist_type" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="checklist_template_window_action" model="ir.actions.act_window">
+        <field name="name">Checklist Templates</field>
+        <field name="res_model">checklist.template</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No checklist templates found. You can create new templates to be used in checklists.
+            </p>
+        </field>
+    </record>
+    <menuitem
+        id="checklist_template_menu"
+        name="Templates"
+        action="checklist_template_window_action"
+        parent="ops_field_checklist.config_menu"
+        sequence="72"
+    />
+
+
+    <record id="checklist_equipment_form_view" model="ir.ui.view">
+        <field name="name">checklist.equipment.form</field>
+        <field name="model">checklist.equipment</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="template_id" />
+                        <field name="reference"
+                               invisible="not id"
+                        />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="checklist_equipment_tree_view" model="ir.ui.view">
+        <field name="name">checklist.equipment.tree</field>
+        <field name="model">checklist.equipment</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" />
+                <field name="template_id" />
+                <field name="reference" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="checklist_equipment_window_action" model="ir.actions.act_window">
+        <field name="name">Checklist Equipment</field>
+        <field name="res_model">checklist.equipment</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No checklist equipment found. You can create new equipment to be used in checklists.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="checklist_equipment_menu"
+        name="Equipment"
+        action="checklist_equipment_window_action"
+        parent="ops_field_checklist.config_menu"
+        sequence="73"
+    />
+
+</odoo>

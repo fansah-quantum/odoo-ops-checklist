@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <menuitem
+        id="root_menu"
+        name="Checklist"
+        groups="base.group_user"
+        sequence="10"
+    >
+        <menuitem
+            id="overview_menu"
+            name="Overview"
+            sequence="22"
+        />
+        <menuitem
+            id="config_menu"
+            name="Configuration"
+            sequence="99"
+            groups="ops_field_checklist.group_ops_manager"
+
+
+        />
+        <menuitem
+            id="report_menu"
+            name="Reports"
+            sequence="100"
+        />
+    </menuitem>
+
+</odoo>

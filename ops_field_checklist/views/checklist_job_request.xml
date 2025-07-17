@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="checklist_job_request_tree_view" model="ir.ui.view">
+        <field name="name">checklist.job.request.tree</field>
+        <field name="model">checklist.job.request</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="inspected_area"/>
+                <field name="equipment_id"/>
+                <field name="state"/>
+                <field name="owner_user_id" widget="many2one_avatar_user"/>
+                <field name="respondent_team_id"/>
+                <field name="respondent_user_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="checklist_job_request_form_view" model="ir.ui.view">
+        <field name="name">checklist.job.request.form</field>
+        <field name="model">checklist.job.request</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state"
+                           widget="statusbar"
+                           statusbar_visible="draft,in_progress,completed,cancelled"
+                            options="{'clickable': '1'}"
+                    />
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="inspected_area"/>
+                        <field name="equipment_id" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="owner_user_id" options="{'no_create': True, 'no_open': True}"/>
+                    </group>
+                    <group>
+                         <field name="respondent_team_id" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="respondent_user_id" options="{'no_create': True, 'no_open': True}"/>
+                        <field name="request_date" readonly="1"/>
+                        <field name="job_request_reference" />
+                    </group>
+                    <notebook>
+                        <page string="Checklist Info">
+                            <group>
+                            <field name="inspection_activity_id" readonly="1"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="checklist_job_request_kanban_view" model="ir.ui.view">
+        <field name="name">checklist.job.request.kanban</field>
+        <field name="model">checklist.job.request</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" sample="1">
+                <field name="name"/>
+                <field name="inspected_area"/>
+                <field name="equipment_id"/>
+                <field name="state"/>
+                <field name="archive" invisible="1"/>
+                <field name="color" />
+
+                <progressbar field="kanban_state" colors="{&quot;done&quot;: &quot;success&quot;, &quot;blocked&quot;: &quot;danger&quot;}"/>
+                <templates>
+                    <t t-name="kanban-menu">
+                        <t t-if="widget.editable"><a role="menuitem" type="edit" class="dropdown-item">Edit...</a></t>
+                        <t t-if="widget.deletable"><a role="menuitem" type="delete" class="dropdown-item">Delete</a></t>
+                        <ul class="oe_kanban_colorpicker" data-field="color"/>
+                    </t>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="{{!selection_mode ? 'oe_kanban_color_' + kanban_getcolor(record.color.raw_value) : ''}} oe_kanban_card oe_kanban_global_click oe_semantic_html_override">
+                            <div class="oe_kanban_content" tooltip="kanban-tooltip">
+                                <div class="o_kanban_record_top">
+                                    <b class="o_kanban_record_title"><field name="name"/></b>
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <span name="owner_user_id" t-if="record.owner_user_id.raw_value">Requested by: <field name="owner_user_id"/><br/></span>
+                                    <span class="oe_grey" t-if="record.equipment_id.raw_value"><field name="equipment_id"/><span t-if="record.inspected_area.raw_value"> (<field name="inspected_area"/>)</span><br/></span>
+                                    <span name="job_request_reference" t-if="record.job_request_reference.raw_value">Ref: <field name="job_request_reference"/><br/></span>
+                                    <span class="oe_grey" t-if="record.request_date.raw_value">Requested on: <field name="request_date"/></span>
+
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+<!--                                        <field name="priority" widget="priority"/>-->
+                                        <div class="o_kanban_inline_block ml4 mr4">
+                                            <field name="activity_ids" widget="kanban_activity"/>
+                                        </div>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <div invisible="not archive">
+                                            <span class="badge text-bg-warning float-end">Cancelled</span>
+                                        </div>
+                                        <field name="kanban_state" widget="state_selection"/>
+                                        <field name="respondent_user_id" widget="many2one_avatar_user"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+     <record id="checklist_job_request_search_view" model="ir.ui.view">
+  <field name="name">checklist.job.request.search</field>
+  <field name="model">checklist.job.request</field>
+  <field name="arch" type="xml">
+    <search string="Checklist Job Request Search">
+      <field name="name"/>
+        <field name="inspected_area"/>
+        <field name="equipment_id"/>
+        <filter name="filter_by_inspected_area"
+                string="Inspected Area"
+              domain="[('inspected_area', 'ilike', context.get('default_inspected_area'))]"/>
+    </search>
+  </field>
+</record>
+
+    <record id="action_checklist_job_request" model="ir.actions.act_window">
+        <field name="name">Job Requests</field>
+        <field name="search_view_id" ref="checklist_job_request_search_view"/>
+        <field name="res_model">checklist.job.request</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No job requests found. You can create new job requests to track checklist inspections.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_checklist_job_request"
+        name="Job Requests"
+        action="action_checklist_job_request"
+        parent="ops_field_checklist.overview_menu"
+        sequence="100"
+    />
+
+
+    <record id="checklist_job_request_view_graph" model="ir.ui.view">
+        <field name="name">checklist.job.request.graph</field>
+        <field name="model">checklist.job.request</field>
+        <field name="arch" type="xml">
+            <graph string="Checklist Job Request" sample="1">
+                <field name="owner_user_id"/>
+                <field name="state" />
+                <field name="inspected_area" />
+                <field name="equipment_id" />
+            </graph>
+        </field>
+    </record>
+
+
+    <record id="action_checklist_job_request_graph" model="ir.actions.act_window">
+        <field name="name">Job Request Graph</field>
+        <field name="res_model">checklist.job.request</field>
+        <field name="view_mode">graph</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No job requests found. You can create new job requests to track checklist inspections.
+            </p>
+        </field>
+    </record>
+    <menuitem
+        id="menu_checklist_job_request_graph"
+        name="Reports"
+        action="action_checklist_job_request_graph"
+        parent="ops_field_checklist.report_menu"
+        sequence="1"
+    />
+
+
+</odoo>
