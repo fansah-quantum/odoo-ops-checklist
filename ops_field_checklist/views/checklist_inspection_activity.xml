@@ -7,7 +7,8 @@
             <form>
                 <header>
                 <button name="action_back_to_inspection"
-                        string="Back to Inspection"
+                        string="Inspection"
+                        icon="fa-arrow-left"
                         type="object"
                         class="oe_highlight"/>
                     <button name="action_cancel_job_request"
@@ -34,13 +35,13 @@
             </header>
                 <sheet>
                     <group>
-                        <field name="inspection_id" options="{'no_create': True, 'no_open': True}" />
+                            <field name="inspection_id" options="{'no_create': True, 'no_open': True}" />
                         <field name="equipment_id" options="{'no_create': True, 'no_open': True}" />
                         <field name="activity_id" options="{'no_create': True, 'no_open': True}" />
-                        <field name="comment" />
-                        <field name="job_request_raised" />
+                            <field name="job_request_raised" />
                         <field name="respondent_team_id" options="{'no_create': True, 'no_open': True}" />
                         <field name="respondent_user_id" options="{'no_create': True, 'no_open': True}" />
+                        <field name="comment" />
                     </group>
                     <notebook>
                         <page string="Response Details">

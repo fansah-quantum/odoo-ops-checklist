@@ -120,11 +120,21 @@ class ChecklistInspectionActivity(models.Model):
             'target': 'main',
         }
 
-    def action_confirm_job_request(self):
-        """ Confirm the job request for this activity. """
+    def check_b4_confirm(self):
+        """
+        Check if the job request can be confirmed.
+        This method checks if the respondent team and user are set.
+        """
         self.ensure_one()
         if not self.job_request_raised:
             raise UserError("Job request has not been raised yet.")
+        if not self.respondent_team_id or not self.respondent_user_id:
+            raise UserError("Respondent team/user must be set before confirming the job request.")
+
+    def action_confirm_job_request(self):
+        """ Confirm the job request for this activity. """
+        self.ensure_one()
+        self.check_b4_confirm()
         self.job_request_state = 'confirmed'
 
         for activity in self:

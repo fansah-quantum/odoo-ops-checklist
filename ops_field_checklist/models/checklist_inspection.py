@@ -23,8 +23,7 @@ class ChecklistInspection(models.Model):
                     )
 
     name = fields.Char(string='Reference',
-                       default=lambda self: self.env['ir.sequence'].next_by_code('checklist.inspection') or 'New',
-                       readonly=True)
+                                readonly=True)
     template_id = fields.Many2one('checklist.template', string='Area Inspected', required=True)
     officer_id = fields.Many2one('res.users',
                                  string='Completed By',
@@ -104,6 +103,7 @@ class ChecklistInspection(models.Model):
                 raise ValidationError("An inspection template must be provided.")
             template = self.env['checklist.template'].browse(template_id)
             self._validate_inspection_answers(template, answer_data)
+        vals['name'] = self.env['ir.sequence'].next_by_code('checklist.inspection') or 'New'
         record = super(ChecklistInspection, self).create(vals)
         if vals.get('officer_id'):
             officer = self.env['res.users'].browse(vals['officer_id'])
@@ -203,3 +203,14 @@ class ChecklistInspection(models.Model):
             'domain': [('template_id', '=', self.id)],
             'context': {'default_template_id': self.id}
         }
+
+
+
+    # @api.model
+    # def default_get(self, fields_list):
+    #     result = super().default_get(fields_list)
+    #     if not result.get('name'):
+    #         result['name'] = self.env['ir.sequence'].next_by_code('checklist.inspection') or 'New'
+    #     return  result
+
+

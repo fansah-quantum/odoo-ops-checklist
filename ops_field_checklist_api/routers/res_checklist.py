@@ -83,7 +83,7 @@ def get_checklist_by_id(
         {
             "id": activity.id,
             "name": activity.activity_id.name,
-            "equipment_name": activity.equipment_name if activity.equipment_name else "",
+            "equipment_name": activity.equipment_id.name if activity.equipment_id else "",
             "comment": activity.comment,
             "job_request_state": activity.job_request_state,
             "job_status": activity.job_status,
@@ -135,13 +135,14 @@ def get_new_checklist(
     new_checklist = {
         "template_id": officer_new_inspection.template_id.id,
         "officer_id": officer.id,
+        "name": officer_new_inspection.name,
         "inspection_type": officer_new_inspection.inspection_type,
         "due_date": officer_new_inspection.due_date.isoformat() if officer_new_inspection.due_date else None,
         "inspection_activities": [
             {
                 "id": activity.id,
                 "name": activity.name,
-                "equipment_name": activity.equipment_name if activity.equipment_name else "",
+                "equipment_name": activity.equipment_id.name if activity.equipment_id else "",
                 "questions": [
                     {
                         "id": question.id,
@@ -228,7 +229,7 @@ def officer_response_to_new_checklist(
                 {
                     "id": activity.id,
                     "name": activity.activity_id.name,
-                    "equipment_name": activity.equipment_name if activity.equipment_name else "",
+                    "equipment_name": activity.equipment_id.name if activity.equipment_id else "",
                     "comment": activity.comment,
                     "job_request_state": activity.job_request_state,
                     "job_status": activity.job_status,
@@ -290,7 +291,7 @@ def get_checklists_by_officer_id(
                 {
                     "id": activity.id,
                     "name": activity.activity_id.name,
-                    "equipment_name": activity.equipment_name if activity.equipment_name else "",
+                    "equipment_name": activity.equipment_id.name if activity.equipment_id else "",
                     "comment": activity.comment,
                     "job_request_state": activity.job_request_state,
                     "job_status": activity.job_status,
@@ -357,7 +358,7 @@ def get_officer_fault_raised_checklists(
                 {
                     "id": activity.id,
                     "name": activity.activity_id.name,
-                    "equipment_name": activity.equipment_name if activity.equipment_name else "",
+                    "equipment_name": activity.equipment_id.name if activity.equipment_id else "",
                     "comment": activity.comment,
                     "job_request_state": activity.job_request_state,
                     "job_status": activity.job_status,

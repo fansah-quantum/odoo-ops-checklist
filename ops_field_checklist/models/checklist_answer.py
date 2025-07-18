@@ -51,11 +51,12 @@ class ChecklistAnswer(models.Model):
         string='Inspection Activity',
         ondelete='cascade'
     )
-    question_id = fields.Many2one('checklist.question',
-                                  string='Question',
-                                  required=True,
-                                  domain="[('activity_id', '=', parent.activity_id)]"
-                                  )
+    question_id = fields.Many2one(
+        'checklist.question',
+        string='Question',
+        required=True,
+        domain="[('activity_id', '=', parent.activity_id)]"
+    )
 
     answer_code_id = fields.Many2one('checklist.answer.code', string='Answer Code')
     answer_value = fields.Char(string='Recorded Value')

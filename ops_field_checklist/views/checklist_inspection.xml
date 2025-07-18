@@ -21,7 +21,7 @@
                 </header>
                 <sheet>
                     <group>
-                        <field name="name"  />
+                        <field name="name"  invisible="not id"/>
                         <field name="inspection_type"/>
                         <field name="template_id" options="{'no_create': True, 'no_open': True}" />
                         <field name="start_date" />

@@ -78,6 +78,7 @@ class NewInspectionActivity(BaseModel):
 
 
 class NewChecklistItem(BaseModel):
+    name: str = Field(..., description="Reference name for the checklist item")
     template_id: int = Field(..., description="ID of the checklist template")
     officer_id: int = Field(..., description="ID of the officer responsible for the checklist item")
     inspection_type: str = Field(..., description="Type of inspection (e.g., daily, weekly, monthly)")
